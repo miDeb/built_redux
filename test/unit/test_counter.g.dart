@@ -15,6 +15,8 @@ class _$CounterActions extends CounterActions {
   _$CounterActions._() : super._();
 
   final increment = new ActionDispatcher<int>('CounterActions-increment');
+  final doubleIncrement =
+      new ActionDispatcher<int>('CounterActions-doubleIncrement');
   final incrementOther =
       new ActionDispatcher<int>('CounterActions-incrementOther');
 
@@ -24,6 +26,7 @@ class _$CounterActions extends CounterActions {
   @override
   void setDispatcher(Dispatcher dispatcher) {
     increment.setDispatcher(dispatcher);
+    doubleIncrement.setDispatcher(dispatcher);
     incrementOther.setDispatcher(dispatcher);
 
     subCounterActions.setDispatcher(dispatcher);
@@ -33,6 +36,8 @@ class _$CounterActions extends CounterActions {
 
 class CounterActionsNames {
   static final increment = new ActionName<int>('CounterActions-increment');
+  static final doubleIncrement =
+      new ActionName<int>('CounterActions-doubleIncrement');
   static final incrementOther =
       new ActionName<int>('CounterActions-incrementOther');
 }
@@ -60,19 +65,22 @@ class _$MiddlewareActions extends MiddlewareActions {
   factory _$MiddlewareActions() => new _$MiddlewareActions._();
   _$MiddlewareActions._() : super._();
 
-  final doubleIt = new ActionDispatcher<int>('MiddlewareActions-doubleIt');
-  final tripleIt = new ActionDispatcher<int>('MiddlewareActions-tripleIt');
+  final doubleIt = new ActionDispatcher<void>('MiddlewareActions-doubleIt');
+  final tripleIt = new ActionDispatcher<void>('MiddlewareActions-tripleIt');
+  final timesSix = new ActionDispatcher<void>('MiddlewareActions-timesSix');
 
   @override
   void setDispatcher(Dispatcher dispatcher) {
     doubleIt.setDispatcher(dispatcher);
     tripleIt.setDispatcher(dispatcher);
+    timesSix.setDispatcher(dispatcher);
   }
 }
 
 class MiddlewareActionsNames {
-  static final doubleIt = new ActionName<int>('MiddlewareActions-doubleIt');
-  static final tripleIt = new ActionName<int>('MiddlewareActions-tripleIt');
+  static final doubleIt = new ActionName<void>('MiddlewareActions-doubleIt');
+  static final tripleIt = new ActionName<void>('MiddlewareActions-tripleIt');
+  static final timesSix = new ActionName<void>('MiddlewareActions-timesSix');
 }
 
 // **************************************************************************
