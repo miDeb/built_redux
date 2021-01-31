@@ -7,7 +7,7 @@ part 'inheritance_test_models.g.dart';
 
 // ChildActions is the only of the three that yield the generated classes
 abstract class ChildActions extends ParentActions {
-  ActionDispatcher<Null> get childAction;
+  VoidActionDispatcher get childAction;
 
   ChildActions._();
   factory ChildActions() => _$ChildActions();
@@ -15,12 +15,12 @@ abstract class ChildActions extends ParentActions {
 
 // ParentActions will be inherited by ChildActions
 abstract class ParentActions extends GrandparentActions {
-  ActionDispatcher<Null> get parentAction;
+  VoidActionDispatcher get parentAction;
 }
 
 // GrandparentActions will be inherited by ChildActions
 abstract class GrandparentActions extends ReduxActions {
-  ActionDispatcher<Null> get grandparentAction;
+  VoidActionDispatcher get grandparentAction;
 }
 
 // Parent will be impelemented by Child
@@ -58,12 +58,14 @@ abstract class Child
 // (Grandparent, Action<T>, GrandparentBuilder)
 Reducer<Child, ChildBuilder, dynamic> getInheritanceReducer() =>
     (ReducerBuilder<Child, ChildBuilder>()
-          ..add<Null>(ChildActionsNames.childAction,
-              (state, action, builder) => builder.childCount++)
-          ..add<Null>(
+          ..add<void>(
+              ChildActionsNames.childAction,
+              (state, action, builder) =>
+                  builder.childCount = builder.childCount! + 1)
+          ..add<void>(
               ChildActionsNames.parentAction,
               (Parent state, action, ParentBuilder builder) =>
-                  builder.parentCount += 2)
+                  builder.parentCount = builder.parentCount! + 2)
           ..combineAbstract(grandparentBuilder.build()))
         .build();
 
@@ -74,5 +76,7 @@ Reducer<Child, ChildBuilder, dynamic> getInheritanceReducer() =>
 // (Grandparent, Action<T>, GrandparentBuilder)
 AbstractReducerBuilder<Grandparent, GrandparentBuilder> grandparentBuilder =
     AbstractReducerBuilder<Grandparent, GrandparentBuilder>()
-      ..add<Null>(ChildActionsNames.grandparentAction,
-          (state, action, builder) => builder.grandparentCount += 3);
+      ..add<void>(
+          ChildActionsNames.grandparentAction,
+          (state, action, builder) =>
+              builder.grandparentCount = builder.grandparentCount! + 3);

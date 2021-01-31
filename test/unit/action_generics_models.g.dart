@@ -7,7 +7,6 @@ part of action_generics_models;
 // **************************************************************************
 
 // ignore_for_file: avoid_classes_with_only_static_members
-// ignore_for_file: annotate_overrides
 // ignore_for_file: overridden_fields
 // ignore_for_file: type_annotate_public_apis
 
@@ -16,7 +15,7 @@ class _$ActionGenericsActions extends ActionGenericsActions {
   _$ActionGenericsActions._() : super._();
 
   final intAction = ActionDispatcher<int>('ActionGenericsActions-intAction');
-  final nullAction = ActionDispatcher<Null>('ActionGenericsActions-nullAction');
+  final voidAction = VoidActionDispatcher('ActionGenericsActions-voidAction');
   final setIntAction =
       ActionDispatcher<Set<int>>('ActionGenericsActions-setIntAction');
   final listIntAction =
@@ -35,7 +34,7 @@ class _$ActionGenericsActions extends ActionGenericsActions {
   @override
   void setDispatcher(Dispatcher dispatcher) {
     intAction.setDispatcher(dispatcher);
-    nullAction.setDispatcher(dispatcher);
+    voidAction.setDispatcher(dispatcher);
     setIntAction.setDispatcher(dispatcher);
     listIntAction.setDispatcher(dispatcher);
     mapStringToListIntAction.setDispatcher(dispatcher);
@@ -47,8 +46,8 @@ class _$ActionGenericsActions extends ActionGenericsActions {
 
 class ActionGenericsActionsNames {
   static final intAction = ActionName<int>('ActionGenericsActions-intAction');
-  static final nullAction =
-      ActionName<Null>('ActionGenericsActions-nullAction');
+  static final voidAction =
+      ActionName<void>('ActionGenericsActions-voidAction');
   static final setIntAction =
       ActionName<Set<int>>('ActionGenericsActions-setIntAction');
   static final listIntAction =
@@ -73,13 +72,11 @@ class _$ActionGenerics extends ActionGenerics {
   @override
   final int count;
 
-  factory _$ActionGenerics([void Function(ActionGenericsBuilder) updates]) =>
+  factory _$ActionGenerics([void Function(ActionGenericsBuilder)? updates]) =>
       (new ActionGenericsBuilder()..update(updates)).build();
 
-  _$ActionGenerics._({this.count}) : super._() {
-    if (count == null) {
-      throw new BuiltValueNullFieldError('ActionGenerics', 'count');
-    }
+  _$ActionGenerics._({required this.count}) : super._() {
+    BuiltValueNullFieldError.checkNotNull(count, 'ActionGenerics', 'count');
   }
 
   @override
@@ -110,17 +107,18 @@ class _$ActionGenerics extends ActionGenerics {
 
 class ActionGenericsBuilder
     implements Builder<ActionGenerics, ActionGenericsBuilder> {
-  _$ActionGenerics _$v;
+  _$ActionGenerics? _$v;
 
-  int _count;
-  int get count => _$this._count;
-  set count(int count) => _$this._count = count;
+  int? _count;
+  int? get count => _$this._count;
+  set count(int? count) => _$this._count = count;
 
   ActionGenericsBuilder();
 
   ActionGenericsBuilder get _$this {
-    if (_$v != null) {
-      _count = _$v.count;
+    final $v = _$v;
+    if ($v != null) {
+      _count = $v.count;
       _$v = null;
     }
     return this;
@@ -128,20 +126,21 @@ class ActionGenericsBuilder
 
   @override
   void replace(ActionGenerics other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$ActionGenerics;
   }
 
   @override
-  void update(void Function(ActionGenericsBuilder) updates) {
+  void update(void Function(ActionGenericsBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
   @override
   _$ActionGenerics build() {
-    final _$result = _$v ?? new _$ActionGenerics._(count: count);
+    final _$result = _$v ??
+        new _$ActionGenerics._(
+            count: BuiltValueNullFieldError.checkNotNull(
+                count, 'ActionGenerics', 'count'));
     replace(_$result);
     return _$result;
   }

@@ -5,7 +5,7 @@ import 'inheritance_test_models.dart';
 
 void main() {
   group('inheritence', () {
-    Store<Child, ChildBuilder, ChildActions> store;
+    late Store<Child, ChildBuilder, ChildActions> store;
 
     setUp(() {
       store = Store<Child, ChildBuilder, ChildActions>(

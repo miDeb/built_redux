@@ -5,7 +5,7 @@ import 'collection_models.dart';
 
 void main() {
   group('collection reducer builders', () {
-    Store<Collection, CollectionBuilder, CollectionActions> store;
+    late Store<Collection, CollectionBuilder, CollectionActions> store;
 
     setUp(() {
       store = Store<Collection, CollectionBuilder, CollectionActions>(

@@ -13,7 +13,7 @@ abstract class BaseActions extends ReduxActions {
   BaseActions._();
   factory BaseActions() => _$BaseActions();
 
-  ActionDispatcher<Null> get baseAction;
+  VoidActionDispatcher get baseAction;
   ChildActions get child;
 }
 
@@ -23,7 +23,7 @@ abstract class ChildActions extends ReduxActions {
   ChildActions._();
   factory ChildActions() => _$ChildActions();
 
-  ActionDispatcher<Null> get childAction;
+  VoidActionDispatcher get childAction;
   GrandchildActions get grandchild;
 }
 
@@ -32,7 +32,7 @@ abstract class GrandchildActions extends ReduxActions {
   GrandchildActions._();
   factory GrandchildActions() => _$GrandchildActions();
 
-  ActionDispatcher<Null> get grandchildAction;
+  VoidActionDispatcher get grandchildAction;
 }
 
 // Base is the main built class that contains all of the state
@@ -71,7 +71,8 @@ abstract class Grandchild implements Built<Grandchild, GrandchildBuilder> {
 // (Base, Action<T>, BaseBuilder)
 Reducer<Base, BaseBuilder, dynamic> getBaseReducer() =>
     (ReducerBuilder<Base, BaseBuilder>()
-          ..add<Null>(BaseActionsNames.baseAction, (s, a, b) => b.count++)
+          ..add<void>(
+              BaseActionsNames.baseAction, (s, a, b) => b.count = b.count! + 1)
           ..combineNested(getChildReducer())
           ..combineNested(getNestedGrandchildReducer()))
         .build();
@@ -85,7 +86,8 @@ NestedReducerBuilder<Base, BaseBuilder, Child, ChildBuilder>
     getChildReducer() =>
         (NestedReducerBuilder<Base, BaseBuilder, Child, ChildBuilder>(
             (s) => s.child, (b) => b.child)
-          ..add<Null>(ChildActionsNames.childAction, (s, a, b) => b.count++));
+          ..add<void>(ChildActionsNames.childAction,
+              (s, a, b) => b.count = b.count! + 1));
 
 // getGrandchildReducer returns a nested reducer builder that rebuilds the
 // grandchild built when grandchildAction is dispatched. This NestedReducerBuilder
@@ -100,5 +102,5 @@ NestedReducerBuilder<Base, BaseBuilder, Grandchild, GrandchildBuilder>
 
 ReducerBuilder<Grandchild, GrandchildBuilder> getGrandchildReducer() =>
     ReducerBuilder<Grandchild, GrandchildBuilder>()
-      ..add<Null>(
-          GrandchildActionsNames.grandchildAction, (s, a, b) => b.count++);
+      ..add<void>(GrandchildActionsNames.grandchildAction,
+          (s, a, b) => b.count = b.count! + 1);

@@ -12,11 +12,11 @@ abstract class CollectionActions extends ReduxActions {
   CollectionActions._();
   factory CollectionActions() => _$CollectionActions();
 
-  ActionDispatcher<Null> get builtListAction;
-  ActionDispatcher<Null> get builtListMultimapAction;
-  ActionDispatcher<Null> get builtMapAction;
-  ActionDispatcher<Null> get builtSetAction;
-  ActionDispatcher<Null> get builtSetMultimapAction;
+  VoidActionDispatcher get builtListAction;
+  VoidActionDispatcher get builtListMultimapAction;
+  VoidActionDispatcher get builtMapAction;
+  VoidActionDispatcher get builtSetAction;
+  VoidActionDispatcher get builtSetMultimapAction;
 }
 
 // Collection contains one of each built_collection type
@@ -54,7 +54,7 @@ Reducer<Collection, CollectionBuilder, dynamic> getCollectionReducer() =>
 ListReducerBuilder<Collection, CollectionBuilder, int> getListReducer() =>
     ListReducerBuilder<Collection, CollectionBuilder, int>(
         (s) => s.builtList, (b) => b.builtList)
-      ..add<Null>(
+      ..add<void>(
           CollectionActionsNames.builtListAction, (s, a, b) => b.add(0));
 
 // getListMultimapReducer returns a ListMultimapReducerBuilder that rebuilds the list multimap
@@ -66,7 +66,7 @@ ListMultimapReducerBuilder<Collection, CollectionBuilder, int, int>
     getListMultimapReducer() =>
         ListMultimapReducerBuilder<Collection, CollectionBuilder, int, int>(
             (s) => s.builtListMultimap, (b) => b.builtListMultimap)
-          ..add<Null>(CollectionActionsNames.builtListMultimapAction,
+          ..add<void>(CollectionActionsNames.builtListMultimapAction,
               (s, a, b) => b.add(0, 0));
 
 // getMapReducer returns a MapReducerBuilder that rebuilds the map
@@ -77,7 +77,7 @@ ListMultimapReducerBuilder<Collection, CollectionBuilder, int, int>
 MapReducerBuilder<Collection, CollectionBuilder, int, int> getMapReducer() =>
     MapReducerBuilder<Collection, CollectionBuilder, int, int>(
         (s) => s.builtMap, (b) => b.builtMap)
-      ..add<Null>(CollectionActionsNames.builtMapAction, (s, a, b) => b[0] = 0);
+      ..add<void>(CollectionActionsNames.builtMapAction, (s, a, b) => b[0] = 0);
 
 // getSetReducer returns a SetReducerBuilder that rebuilds the set
 // when builtSetAction is dispatched. This SetReducerBuilder
@@ -87,7 +87,7 @@ MapReducerBuilder<Collection, CollectionBuilder, int, int> getMapReducer() =>
 SetReducerBuilder<Collection, CollectionBuilder, int> getSetReducer() =>
     SetReducerBuilder<Collection, CollectionBuilder, int>(
         (s) => s.builtSet, (b) => b.builtSet)
-      ..add<Null>(CollectionActionsNames.builtSetAction, (s, a, b) => b.add(0));
+      ..add<void>(CollectionActionsNames.builtSetAction, (s, a, b) => b.add(0));
 
 // getSetMultimapReducer returns a SetMultimapReducerBuilder that rebuilds the set multimap
 // when builtSetMultimapAction is dispatched. This SetMultimapReducerBuilder
@@ -98,5 +98,5 @@ SetMultimapReducerBuilder<Collection, CollectionBuilder, int, int>
     getSetMultimapReducer() =>
         SetMultimapReducerBuilder<Collection, CollectionBuilder, int, int>(
             (s) => s.builtSetMultimap, (b) => b.builtSetMultimap)
-          ..add<Null>(CollectionActionsNames.builtSetMultimapAction,
+          ..add<void>(CollectionActionsNames.builtSetMultimapAction,
               (s, a, b) => b.add(0, 0));

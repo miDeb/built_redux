@@ -7,7 +7,6 @@ part of inheritance_test_models;
 // **************************************************************************
 
 // ignore_for_file: avoid_classes_with_only_static_members
-// ignore_for_file: annotate_overrides
 // ignore_for_file: overridden_fields
 // ignore_for_file: type_annotate_public_apis
 
@@ -15,10 +14,10 @@ class _$ChildActions extends ChildActions {
   factory _$ChildActions() => _$ChildActions._();
   _$ChildActions._() : super._();
 
-  final childAction = ActionDispatcher<Null>('ChildActions-childAction');
-  final parentAction = ActionDispatcher<Null>('ParentActions-parentAction');
+  final childAction = VoidActionDispatcher('ChildActions-childAction');
+  final parentAction = VoidActionDispatcher('ParentActions-parentAction');
   final grandparentAction =
-      ActionDispatcher<Null>('GrandparentActions-grandparentAction');
+      VoidActionDispatcher('GrandparentActions-grandparentAction');
 
   @override
   void setDispatcher(Dispatcher dispatcher) {
@@ -29,21 +28,21 @@ class _$ChildActions extends ChildActions {
 }
 
 class ChildActionsNames {
-  static final childAction = ActionName<Null>('ChildActions-childAction');
-  static final parentAction = ActionName<Null>('ParentActions-parentAction');
+  static final childAction = ActionName<void>('ChildActions-childAction');
+  static final parentAction = ActionName<void>('ParentActions-parentAction');
   static final grandparentAction =
-      ActionName<Null>('GrandparentActions-grandparentAction');
+      ActionName<void>('GrandparentActions-grandparentAction');
 }
 
 class ParentActionsNames {
-  static final parentAction = ActionName<Null>('ParentActions-parentAction');
+  static final parentAction = ActionName<void>('ParentActions-parentAction');
   static final grandparentAction =
-      ActionName<Null>('GrandparentActions-grandparentAction');
+      ActionName<void>('GrandparentActions-grandparentAction');
 }
 
 class GrandparentActionsNames {
   static final grandparentAction =
-      ActionName<Null>('GrandparentActions-grandparentAction');
+      ActionName<void>('GrandparentActions-grandparentAction');
 }
 
 // **************************************************************************
@@ -53,15 +52,15 @@ class GrandparentActionsNames {
 abstract class ParentBuilder {
   void replace(Parent other);
   void update(void Function(ParentBuilder) updates);
-  int get parentCount;
-  set parentCount(int parentCount);
+  int? get parentCount;
+  set parentCount(int? parentCount);
 }
 
 abstract class GrandparentBuilder {
   void replace(Grandparent other);
   void update(void Function(GrandparentBuilder) updates);
-  int get grandparentCount;
-  set grandparentCount(int grandparentCount);
+  int? get grandparentCount;
+  set grandparentCount(int? grandparentCount);
 }
 
 class _$Child extends Child {
@@ -72,20 +71,18 @@ class _$Child extends Child {
   @override
   final int grandparentCount;
 
-  factory _$Child([void Function(ChildBuilder) updates]) =>
+  factory _$Child([void Function(ChildBuilder)? updates]) =>
       (new ChildBuilder()..update(updates)).build();
 
-  _$Child._({this.childCount, this.parentCount, this.grandparentCount})
+  _$Child._(
+      {required this.childCount,
+      required this.parentCount,
+      required this.grandparentCount})
       : super._() {
-    if (childCount == null) {
-      throw new BuiltValueNullFieldError('Child', 'childCount');
-    }
-    if (parentCount == null) {
-      throw new BuiltValueNullFieldError('Child', 'parentCount');
-    }
-    if (grandparentCount == null) {
-      throw new BuiltValueNullFieldError('Child', 'grandparentCount');
-    }
+    BuiltValueNullFieldError.checkNotNull(childCount, 'Child', 'childCount');
+    BuiltValueNullFieldError.checkNotNull(parentCount, 'Child', 'parentCount');
+    BuiltValueNullFieldError.checkNotNull(
+        grandparentCount, 'Child', 'grandparentCount');
   }
 
   @override
@@ -122,28 +119,29 @@ class _$Child extends Child {
 
 class ChildBuilder
     implements Builder<Child, ChildBuilder>, ParentBuilder, GrandparentBuilder {
-  _$Child _$v;
+  _$Child? _$v;
 
-  int _childCount;
-  int get childCount => _$this._childCount;
-  set childCount(int childCount) => _$this._childCount = childCount;
+  int? _childCount;
+  int? get childCount => _$this._childCount;
+  set childCount(int? childCount) => _$this._childCount = childCount;
 
-  int _parentCount;
-  int get parentCount => _$this._parentCount;
-  set parentCount(int parentCount) => _$this._parentCount = parentCount;
+  int? _parentCount;
+  int? get parentCount => _$this._parentCount;
+  set parentCount(int? parentCount) => _$this._parentCount = parentCount;
 
-  int _grandparentCount;
-  int get grandparentCount => _$this._grandparentCount;
-  set grandparentCount(int grandparentCount) =>
+  int? _grandparentCount;
+  int? get grandparentCount => _$this._grandparentCount;
+  set grandparentCount(int? grandparentCount) =>
       _$this._grandparentCount = grandparentCount;
 
   ChildBuilder();
 
   ChildBuilder get _$this {
-    if (_$v != null) {
-      _childCount = _$v.childCount;
-      _parentCount = _$v.parentCount;
-      _grandparentCount = _$v.grandparentCount;
+    final $v = _$v;
+    if ($v != null) {
+      _childCount = $v.childCount;
+      _parentCount = $v.parentCount;
+      _grandparentCount = $v.grandparentCount;
       _$v = null;
     }
     return this;
@@ -152,14 +150,12 @@ class ChildBuilder
   @override
 // ignore: override_on_non_overriding_method
   void replace(covariant Child other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$Child;
   }
 
   @override
-  void update(void Function(ChildBuilder) updates) {
+  void update(void Function(ChildBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -167,9 +163,12 @@ class ChildBuilder
   _$Child build() {
     final _$result = _$v ??
         new _$Child._(
-            childCount: childCount,
-            parentCount: parentCount,
-            grandparentCount: grandparentCount);
+            childCount: BuiltValueNullFieldError.checkNotNull(
+                childCount, 'Child', 'childCount'),
+            parentCount: BuiltValueNullFieldError.checkNotNull(
+                parentCount, 'Child', 'parentCount'),
+            grandparentCount: BuiltValueNullFieldError.checkNotNull(
+                grandparentCount, 'Child', 'grandparentCount'));
     replace(_$result);
     return _$result;
   }

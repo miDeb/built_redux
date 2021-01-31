@@ -5,7 +5,7 @@ import 'nested_models.dart';
 
 void main() {
   group('nested builts and actions', () {
-    Store<Base, BaseBuilder, BaseActions> store;
+    late Store<Base, BaseBuilder, BaseActions> store;
 
     setUp(() {
       store = Store<Base, BaseBuilder, BaseActions>(

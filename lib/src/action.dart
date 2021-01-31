@@ -26,14 +26,32 @@ typedef Dispatcher<P> = void Function(Action<P> action);
 /// store.actions.increment(3);
 /// ```
 class ActionDispatcher<P> {
-  Dispatcher _dispatcher;
+  late Dispatcher _dispatcher;
   final String _name;
 
   String get name => _name;
 
-  void call([P payload]) => _dispatcher(Action<P>(_name, payload));
+  void call(P payload) => _dispatcher(Action<P>(_name, payload));
 
   ActionDispatcher(this._name);
+
+  void setDispatcher(Dispatcher dispatcher) {
+    _dispatcher = dispatcher;
+  }
+}
+
+/// [VoidActionDispatcher] dispatches an action with the name provided
+/// to the constructor and no payload when called. You will notice
+/// [ActionDispatcher] is an object, however it is to be used like a function.
+class VoidActionDispatcher {
+  late Dispatcher _dispatcher;
+  final String _name;
+
+  String get name => _name;
+
+  void call() => _dispatcher(Action<void>(_name, null));
+
+  VoidActionDispatcher(this._name);
 
   void setDispatcher(Dispatcher dispatcher) {
     _dispatcher = dispatcher;

@@ -24,7 +24,7 @@ abstract class ActionGenericsActions extends ReduxActions {
   factory ActionGenericsActions() => _$ActionGenericsActions();
 
   ActionDispatcher<int> get intAction;
-  ActionDispatcher<Null> get nullAction;
+  VoidActionDispatcher get voidAction;
   ActionDispatcher<Set<int>> get setIntAction;
   ActionDispatcher<List<int>> get listIntAction;
   ActionDispatcher<Map<String, List<int>>> get mapStringToListIntAction;
@@ -49,16 +49,16 @@ Reducer<ActionGenerics, ActionGenericsBuilder, dynamic>
         (ReducerBuilder<ActionGenerics, ActionGenericsBuilder>()
               ..add<int>(ActionGenericsActionsNames.intAction,
                   (s, a, b) => b.count = s.count + a.payload)
-              ..add<Null>(
-                  ActionGenericsActionsNames.nullAction, (s, a, b) => b.count++)
+              ..add<void>(ActionGenericsActionsNames.voidAction,
+                  (s, a, b) => b.count = b.count! + 1)
               ..add<List<int>>(
                   ActionGenericsActionsNames.listIntAction,
-                  (s, a, b) =>
-                      b.count += a.payload.fold<int>(0, (c, n) => c + n))
+                  (s, a, b) => b.count =
+                      b.count! + a.payload.fold<int>(0, (c, n) => c + n))
               ..add<Map<String, List<int>>>(
                   ActionGenericsActionsNames.mapStringToListIntAction,
-                  (s, a, b) =>
-                      b.count += a.payload['k'].fold<int>(0, (c, n) => c + n)))
+                  (s, a, b) => b.count = b.count! +
+                      a.payload['k']! /*!*/ .fold<int>(0, (c, n) => c + n)))
             .build();
 
 NextActionHandler thunkMiddleware(

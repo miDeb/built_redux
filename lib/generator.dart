@@ -63,10 +63,16 @@ String _fieldType(ClassElement element, FieldElement field) {
   if (field.isSynthetic) {
     return _syntheticFieldType(element, field);
   }
+  if (field.type.name == "VoidActionDispatcher") {
+    return "void";
+  }
   return _getGenerics(field.source.contents.data, field.nameOffset);
 }
 
 String _syntheticFieldType(ClassElement element, FieldElement field) {
+  if (field.type.name == "VoidActionDispatcher") {
+    return "void";
+  }
   final method = element.getGetter(field.name);
   return _getGenerics(method.source.contents.data, method.nameOffset);
 }
@@ -84,7 +90,8 @@ bool _isReduxActions(Element element) =>
     element is ClassElement && _hasSuperType(element, 'ReduxActions');
 
 bool _isActionDispatcher(FieldElement element) =>
-    element.type.name == 'ActionDispatcher';
+    element.type.name == 'ActionDispatcher' ||
+    element.type.name == "VoidActionDispatcher";
 
 bool _hasSuperType(ClassElement classElement, String type) =>
     classElement.allSupertypes
@@ -133,8 +140,9 @@ String _allComposedActionClassesFieldsTemplate(ActionsClass actionsClass) =>
     actionsClass.allComposed.fold('',
         (comb, next) => '$comb\n${_composedActionClassesFieldTemplate(next)}');
 
-String _actionDispatcherFieldTemplate(Action action) =>
-    'final ${action.fieldName} =  ActionDispatcher<${action.type}>(\'${action.actionName}\');';
+String _actionDispatcherFieldTemplate(Action action) => action.type == "void"
+    ? 'final ${action.fieldName} = VoidActionDispatcher(\'${action.actionName}\');'
+    : 'final ${action.fieldName} = ActionDispatcher<${action.type}>(\'${action.actionName}\');';
 
 String _composedActionClassesFieldTemplate(
         ComposedActionClass composedActionClass) =>

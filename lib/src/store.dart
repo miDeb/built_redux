@@ -27,12 +27,8 @@ class Store<
     State defaultState,
     Actions actions, {
     Iterable<Middleware<State, StateBuilder, Actions>> middleware = const [],
-  }) {
-    // set the initial state
-    _state = defaultState;
-
-    _actions = actions;
-
+  })  : _state = defaultState,
+        _actions = actions {
     final api = MiddlewareApi<State, StateBuilder, Actions>(this);
 
     // setup the dispatch chain
@@ -68,10 +64,8 @@ class Store<
   }
 
   /// [dispose] removes closes both the dispatch and subscription stream
-  Future<Null> dispose() async {
+  Future<void> dispose() async {
     await _stateController.close();
-    _state = null;
-    _actions = null;
   }
 
   /// [replaceState] replaces the state of your store.
