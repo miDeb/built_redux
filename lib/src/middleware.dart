@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:built_value/built_value.dart';
 
 import 'action.dart';
@@ -44,9 +46,9 @@ class MiddlewareBuilder<
   void _add<Payload>(String name,
       MiddlewareHandler<State, StateBuilder, Actions, Payload> handler) {
     final oldMiddlware = _map[name];
-    _map[name] = (api, next, action) {
-      if (oldMiddlware != null) oldMiddlware(api, next, action);
-      handler(api, next, action as Action<Payload>);
+    _map[name] = (api, next, action) async {
+      if (oldMiddlware != null) await oldMiddlware(api, next, action);
+      await handler(api, next, action as Action<Payload>);
     };
   }
 
@@ -74,14 +76,14 @@ class MiddlewareBuilder<
   /// [build] returns a [Middleware] function that handles all actions added with [add]
   Middleware<State, StateBuilder, Actions> build() =>
       (MiddlewareApi<State, StateBuilder, Actions> api) =>
-          (ActionHandler next) => (Action<dynamic> action) {
+          (ActionHandler next) => (Action<dynamic> action) async {
                 var handler = _map[action.name];
                 if (handler != null) {
-                  handler(api, next, action);
+                  await handler(api, next, action);
                   return;
                 }
 
-                next(action);
+                await next(action);
               };
 }
 
@@ -112,9 +114,9 @@ class NestedMiddlewareBuilder<
       MiddlewareHandler<NestedState, NestedStateBuilder, NestedActions, Payload>
           handler) {
     final oldMiddlware = _map[name];
-    _map[name] = (api, next, action) {
-      if (oldMiddlware != null) oldMiddlware(api, next, action);
-      handler(
+    _map[name] = (api, next, action) async {
+      if (oldMiddlware != null) await oldMiddlware(api, next, action);
+      await handler(
         MiddlewareApi._(
             () => _stateMapper(api.state), () => _actionsMapper(api.actions)),
         next,
@@ -142,5 +144,5 @@ typedef MiddlewareHandler<
         StateBuilder extends Builder<State, StateBuilder>,
         Actions extends ReduxActions,
         Payload>
-    = void Function(MiddlewareApi<State, StateBuilder, Actions> api,
+    = FutureOr<void> Function(MiddlewareApi<State, StateBuilder, Actions> api,
         ActionHandler next, Action<Payload> action);

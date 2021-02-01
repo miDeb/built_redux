@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:built_value/built_value.dart';
 
 import 'action.dart';
@@ -10,7 +12,7 @@ typedef Reducer<State extends Built<State, StateBuilder>,
     = void Function(State state, Action<Payload> action, StateBuilder builder);
 
 /// [ActionHandler] handles an action, this will contain the actual middleware logic
-typedef ActionHandler = void Function(Action<dynamic> a);
+typedef ActionHandler = FutureOr<void> Function(Action<dynamic> a);
 
 /// [NextActionHandler] takes the next [ActionHandler] in the middleware chain and returns
 /// an [ActionHandler] for the middleware

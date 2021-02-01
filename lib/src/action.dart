@@ -1,3 +1,5 @@
+import 'dart:async';
+
 /// [Action] is the object passed to your reducer to signify the state change that needs to take place.
 /// Action [name]s should always be unique. Uniqeness is guarenteed when using ReduxActions.
 class Action<Payload> {
@@ -14,7 +16,7 @@ class Action<Payload> {
 }
 
 // Dispatches an action to the store
-typedef Dispatcher<P> = void Function(Action<P> action);
+typedef Dispatcher<P> = FutureOr<void> Function(Action<P> action);
 
 /// [ActionDispatcher] dispatches an action with the name provided
 /// to the constructor and the payload supplied when called. You will notice
@@ -31,7 +33,7 @@ class ActionDispatcher<P> {
 
   String get name => _name;
 
-  void call(P payload) => _dispatcher(Action<P>(_name, payload));
+  FutureOr<void> call(P payload) => _dispatcher(Action<P>(_name, payload));
 
   ActionDispatcher(this._name);
 
@@ -49,7 +51,7 @@ class VoidActionDispatcher {
 
   String get name => _name;
 
-  void call() => _dispatcher(Action<void>(_name, null));
+  FutureOr<void> call() => _dispatcher(Action<void>(_name, null));
 
   VoidActionDispatcher(this._name);
 

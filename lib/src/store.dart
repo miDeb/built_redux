@@ -32,7 +32,7 @@ class Store<
     final api = MiddlewareApi<State, StateBuilder, Actions>(this);
 
     // setup the dispatch chain
-    ActionHandler handler = (action) {
+    ActionHandler handler = (action) async {
       var state = _state.rebuild((b) => reducer(_state, action, b));
 
       // if the state did not change do not publish an event
@@ -53,7 +53,8 @@ class Store<
 
       // combine each middeware
       NextActionHandler combinedMiddleware = chain.reduce(
-          (composed, middleware) => (handler) => composed(middleware(handler)));
+        (composed, middleware) => (handler) => composed(middleware(handler)),
+      );
 
       // make the last middleware in the chain call the top-level reducer
       handler = combinedMiddleware(handler);
