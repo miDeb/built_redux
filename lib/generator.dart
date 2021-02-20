@@ -38,8 +38,8 @@ ActionsClass _actionsClassFromElement(ClassElement element) => ActionsClass(
 
 Iterable<ComposedActionClass> _composedActionClasses(ClassElement element) =>
     element.fields
-        .where((f) => _isReduxActions(f.type.element))
-        .map((f) => ComposedActionClass(f.name, f.type.name));
+        .where((f) => _isReduxActions(f.type.element!))
+        .map((f) => ComposedActionClass(f.name, f.type.name!));
 
 Iterable<Action> _actionsFromElement(ClassElement element) => element.fields
     .where(_isActionDispatcher)
@@ -66,7 +66,7 @@ String _fieldType(ClassElement element, FieldElement field) {
   if (field.type.name == "VoidActionDispatcher") {
     return "void";
   }
-  return _getGenerics(field.source.contents.data, field.nameOffset);
+  return _getGenerics(field.source!.contents.data, field.nameOffset);
 }
 
 String _syntheticFieldType(ClassElement element, FieldElement field) {
@@ -74,7 +74,7 @@ String _syntheticFieldType(ClassElement element, FieldElement field) {
     return "void";
   }
   final method = element.getGetter(field.name);
-  return _getGenerics(method.source.contents.data, method.nameOffset);
+  return _getGenerics(method!.source.contents.data, method.nameOffset);
 }
 
 String _getGenerics(String source, int nameOffset) {
